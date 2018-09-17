@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<!-- Bootstrap includes -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<?!= include("mail_script"); ?>
+<?!= include("mail_css"); ?>
+
+<!-- HTML -->
+<div class="container" style="margin-right: 1px;">
+    <div class="form-group row">
+        <div class="col-xs-12">
+            <label for="Subject">Ämne:</label>
+            <input type="text" class="form-control " id="subject" required autofocus>
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-xs-12">
+            <label for="Message">Meddelande:</label>
+            <textarea class="form-control" rows="5" id="message" required></textarea>
+        </div>
+    </div>
+    
+    <div id="advanced" class="form-group row" style="display: none;">
+        <div class="col-xs-4">
+            <label for="Startrad">Startrad:</label>
+            <input type="text" class="form-control " id="startRow">
+        </div>
+        <div class="col-xs-4">
+            <label for="Email-Kolumn">Email-kolumn:</label>
+            <input type="text" class="form-control " id="emailColumn">
+        </div>
+        <div class="col-xs-4">
+            <label for="AntalMedlemmar">Antal medlemmar:</label>
+            <input type="text" class="form-control " id="members">
+        </div>
+    </div>
+    
+    <div id="bottomButtons" class="row float-right">
+        <div class="col-xs-12 float-right">
+            <input type="button" class="btn btn-primary" value="Skicka" onclick="sendEmail()" />
+            <input type="button" class="btn btn-danger" value="Avbryt" onclick="google.script.host.close()" />
+            <button type="button" class="btn btn-link pull-right" onclick="showAdvanced()"><span id="advancedToggle" class="glyphicon glyphicon-chevron-down pull-right" style="margin-left:5px; margin-top:2px"></span> Avancerat</button>
+        </div>
+    </div>
+</div>
