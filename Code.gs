@@ -51,10 +51,10 @@ function onMemberFormSubmit() {
   }
   
   MailApp.sendEmail(
-    "diddi_simpson@hotmail.com",
+    "helloliugamers@gmail.com",
     "Ny LAN-anmälan",
     values[1] + " " + values[2] + " Har har anmält sig för vårlanet! Medlem: " + values[3] + ", HiQ Anställd: " + values[4] + ", behöver datorskjuts: " + values[5] + 
-    " vänligen bekräfta dennes betalning! Förväntad summa: " + expectedPaymentAmount + " kr.");
+    ". vänligen bekräfta dennes betalning! Förväntad summa: " + expectedPaymentAmount + " kr.");
   
   var memberSheet = ss.getSheets()[1];
   var memberSheetLastRow = memberSheet.getLastRow();
@@ -70,7 +70,7 @@ function onMemberFormSubmit() {
 }
 
 function sendEmails(subject, body, startRow, emailColumn, members) { 
-  if (prompt("Är du säker på att du vill skicka ett email till samtliga medlemmar?")) {
+  if (prompt("Är du säker på att du vill skicka ett email till alla LAN-deltagare?")) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheets()[1];
     if (startRow == "") {
