@@ -29,55 +29,55 @@ function onMemberFormSubmit() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var s = ss.getSheets()[0];
   var lastRow = s.getLastRow();
-  var range = s.getRange('B' + lastRow + ':E' + lastRow);
+  var range = s.getRange('B' + lastRow + ':G' + lastRow);
   var values = range.getValues()[0];
   
   var expectedPaymentAmount = 0;
   // Check if is liu Gamer
-  if (values[4] == "No") {
+  if (values[3] == "No") {
     // Check if is HiQ Emplyee
-    if(values[5] == "Yes") {
+    if(values[4] == "Yes") {
       expectedPaymentAmount += 50;
     } else {
       expectedPaymentAmount += 100;
     }
-  } else if (values[4] == "Yes") {
+  } else if (values[3] == "Yes") {
     expectedPaymentAmount += 50;
   }
   
   // Check if need Computer Transport
-  if (values[6] == "Yes") {
+  if (values[5] == "Yes") {
     expectedPaymentAmount += 60;
   }
   
   MailApp.sendEmail(
-    "helloliugamers@gmail.com",
+    "diddi_simpson@hotmail.com",
     "Ny LAN-anmälan",
-    values[2] + " " + values[3] + " Har har anmält sig för vårlanet! Medlem: " + values[4] + ", HiQ Anställd: " + values[5] + ", behöver datorskjuts: " + values[6] + 
+    values[1] + " " + values[2] + " Har har anmält sig för vårlanet! Medlem: " + values[3] + ", HiQ Anställd: " + values[4] + ", behöver datorskjuts: " + values[5] + 
     " vänligen bekräfta dennes betalning! Förväntad summa: " + expectedPaymentAmount + " kr.");
   
-  var memberSheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
+  var memberSheet = ss.getSheets()[1];
   var memberSheetLastRow = memberSheet.getLastRow();
   var insertRow = memberSheetLastRow + 1;
   
-  memberSheet.getRange(insertRow, getColNumByName("Email address")).setValue(values[1]);
-  memberSheet.getRange(insertRow, getColNumByName("Firstname")).setValue(values[2]);
-  memberSheet.getRange(insertRow, getColNumByName("Lastname")).setValue(values[3]);
-  memberSheet.getRange(insertRow, getColNumByName("LiU Gamer")).setValue(values[4]);
-  memberSheet.getRange(insertRow, getColNumByName("HiQ Employee")).setValue(values[5]);
-  memberSheet.getRange(insertRow, getColNumByName("Computer Transport")).setValue(values[6]);
+  memberSheet.getRange(insertRow, getColNumByName("Email")).setValue(values[0]);
+  memberSheet.getRange(insertRow, getColNumByName("Förnamn")).setValue(values[1]);
+  memberSheet.getRange(insertRow, getColNumByName("Efternamn")).setValue(values[2]);
+  memberSheet.getRange(insertRow, getColNumByName("LiU Gamer")).setValue(values[3]);
+  memberSheet.getRange(insertRow, getColNumByName("HiQ Anställd")).setValue(values[4]);
+  memberSheet.getRange(insertRow, getColNumByName("Datorskjuts")).setValue(values[5]);
+  memberSheet.getRange(insertRow, getColNumByName("Förväntad Betalad Summa")).setValue(expectedPaymentAmount);
 }
 
 function sendEmails(subject, body, startRow, emailColumn, members) { 
   if (prompt("Är du säker på att du vill skicka ett email till samtliga medlemmar?")) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheets()[1];
-    Logger.log(getColNumByName("Epost"))
     if (startRow == "") {
       startRow = 2;
     }
     if (emailColumn == "") {
-      emailColumn = getColNumByName("Epost");
+      emailColumn = getColNumByName("Email");
     }
     if (members == "") {
       members = sheet.getRange(2,getColNumByName("Antal medlemmar")).getValue();
@@ -163,7 +163,7 @@ function getLiuGamerLogo(logoUrl){
 
 function getBottomMemberEmail() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
-  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Epost"));
+  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Email"));
   return range.getValue();
 }
 
