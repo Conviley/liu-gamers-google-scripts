@@ -1,0 +1,50 @@
+<script>
+$(function() {setDefaultValues();});
+
+function setDefaultValues() {     
+  google.script.run
+      .withFailureHandler(function(err){
+          console.error("error occured", e);
+      })
+      .withSuccessHandler(function(res){
+           $( "#recipient" ).val(res);
+      })
+      .getBottomMemberEmail();
+      
+  google.script.run
+      .withFailureHandler(function(err){
+          console.error("error occured", e);
+      })
+      .withSuccessHandler(function(res){
+           $( "#subject" ).val(res);
+      })
+      .getWelcomeMessageSubject();
+      
+  google.script.run
+      .withFailureHandler(function(err){
+          console.error("error occured", e);
+      })
+      .withSuccessHandler(function(res){
+           $( "#message" ).val(res);
+      })
+      .getWelcomeMessage(); 
+}
+
+function sendRegistrationConfirmationMail(){
+    var recipient = document.getElementById("recipient");
+    var subject = document.getElementById('subject');
+    var body = document.getElementById('message');
+        
+    if (subject.value == "") {
+        setError(subject, "Detta fält får ej vara tomt!");
+    } else if (body.value == "") {
+        setError(body, "Detta fält får ej vara tomt!");
+    } else if (recipient.value == "") {
+        setError(recipient, "Detta fält får ej vara tomt!");
+    } else {
+        var dataNlToBr = body.value.replace(/\r?\n/g, '<br>'); 
+        google.script.run.sendRegistrationConfirmationMail(recipient.value, subject.value, dataNlToBr,);
+    }
+
+}
+</script>

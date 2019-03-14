@@ -1,0 +1,43 @@
+<script>
+function sendEmail(){
+    var subject = document.getElementById('subject');
+    var body = document.getElementById('message');
+    
+    var startRow = document.getElementById('startRow');
+    var emailColumn = document.getElementById('emailColumn');
+    var members = document.getElementById('members');
+        
+    if (subject.value == "") {
+        setError(subject, "Detta fält får ej vara tomt!");
+    } else if (body.value == "") {
+        setError(body, "Detta fält får ej vara tomt!");
+    } else {
+        var dataNlToBr = body.value.replace(/\r?\n/g, '<br>');
+        
+        if (!$.isNumeric(startRow.value) && startRow.value != "") {
+            setError(startRow, "Endast numeriskt!");
+        } else if (!$.isNumeric(emailColumn.value) && emailColumn.value != "") {
+            setError(emailColumn, "Endast numeriskt!");
+        } else if (!$.isNumeric(members.value) && members.value != "") {
+            setError(members, "Endast numeriskt!");
+        }else {
+            google.script.run.sendEmails(subject.value, dataNlToBr, startRow.value, emailColumn.value, members.value);
+        }        
+    }
+}
+
+function showAdvanced(){
+    $( "#advanced" ).slideToggle( "fast", function() {
+        var buttons = document.getElementById('bottomButtons');
+        buttons.scrollIntoView({behavior: 'smooth' });
+    });
+    $( "#advancedToggle" ).toggleClass('glyphicon-chevron-up glyphicon-chevron-down');
+    window.scrollTo(0,document.body.scrollHeight);
+}
+
+function setError(elementTag, message) {
+    elementTag.parentElement.classList.add("has-error");
+    elementTag.value = "";
+    elementTag.placeholder = message
+}
+</script>
