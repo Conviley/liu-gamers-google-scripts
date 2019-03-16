@@ -29,18 +29,13 @@ function onMemberFormSubmit() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var s = ss.getSheets()[0];
   var lastRow = s.getLastRow();
-  var range = s.getRange('B' + lastRow + ':G' + lastRow);
+  var range = s.getRange('B' + lastRow + ':H' + lastRow);
   var values = range.getValues()[0];
   
   var expectedPaymentAmount = 0;
   // Check if is liu Gamer
   if (values[3] == "No") {
-    // Check if is HiQ Emplyee
-    if(values[4] == "Yes") {
-      expectedPaymentAmount += 50;
-    } else {
-      expectedPaymentAmount += 100;
-    }
+    expectedPaymentAmount += 100;
   } else if (values[3] == "Yes") {
     expectedPaymentAmount += 50;
   }
@@ -67,6 +62,7 @@ function onMemberFormSubmit() {
   memberSheet.getRange(insertRow, getColNumByName("HiQ Anställd")).setValue(values[4]);
   memberSheet.getRange(insertRow, getColNumByName("Datorskjuts")).setValue(values[5]);
   memberSheet.getRange(insertRow, getColNumByName("Förväntad Betalad Summa")).setValue(expectedPaymentAmount);
+  memberSheet.getRange(insertRow, getColNumByName("Upphämtningsaddress")).setValue(values[6]);
 }
 
 function sendEmails(subject, body, startRow, emailColumn, members) { 
