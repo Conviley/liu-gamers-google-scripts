@@ -6,6 +6,7 @@ var DIALOG_DIMENSIONS = {
 };
 var pickerApiLoaded = false;
 var attachments = [];
+var attachmentNames = [];
 var picker;
 function onApiLoad() {
     gapi.load('picker', {
@@ -54,9 +55,35 @@ function pickerCallback(data) {
     if (action == google.picker.Action.PICKED) {
         var doc = data[google.picker.Response.DOCUMENTS][0];
         var id = doc[google.picker.Document.ID];
+        var name = doc[google.picker.Document.NAME];
         // Show the ID of the Google Drive folder
-        attachments.push(id)
-        document.getElementById('result').innerHTML = "Bifogade filer" + attachments.length;
+        attachments.push(id);
+        attachmentNames.push(name);
+        document.getElementById('result').innerHTML = "Bifogade filer: " + id;
+        
+        var attachmentContainer = document.getElementById('fileAttachments');
+        while (attachmentContainer.firstChild) {
+            attachmentContainer.removeChild(attachmentContainer.firstChild);
+        }
+        attachmentNames.forEach(function(fileName) {
+           var attachmentBox = document.createElement("div");
+           attachmentBox.classList.add("attachment-box")
+           attachmentBox.innerHTML = fileName;
+           
+           var removeAttachment = document.createElement("div");
+           removeAttachment.classList.add("attachment-button", "glyphicon", "glyphicon-remove");
+           removeAttachment.onclick = function() {
+               var indexToRemove = attachmentNames.indexOf(fileName)
+               attachmentNames.splice(indexToRemove, 1);
+               attachments.splice(indexToRemove, 1);
+               attachmentBox.style.display = "none";
+           }
+           attachmentBox.appendChild(removeAttachment);
+         
+           attachmentContainer.appendChild(attachmentBox);
+           document.getElementById('result').innerHTML = "Bifogade filer: ";
+        });
+        
     } else if (action == google.picker.Action.CANCEL) {
          picker.setVisible(false);
     }
