@@ -21,7 +21,7 @@ function sendEmail(){
         } else if (!$.isNumeric(members.value) && members.value != "") {
             setError(members, "Endast numeriskt!");
         }else {
-            google.script.run.sendEmails(subject.value, dataNlToBr, startRow.value, emailColumn.value, members.value);
+            google.script.run.sendEmails(subject.value, dataNlToBr, startRow.value, emailColumn.value, members.value, attachments);
         }        
     }
 }

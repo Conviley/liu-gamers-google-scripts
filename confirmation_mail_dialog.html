@@ -4,16 +4,19 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <?!= include("confirmation_mail_script"); ?>
 <?!= include("mail_script"); ?>
 <?!= include("mail_css"); ?>
+<?!= include("attachment_box_css"); ?>
+<?!= include("google_picker_script"); ?>
 
 <!-- HTML -->
 <div class="container">
     <div class="form-group row">
         <div class="col-xs-12">
             <label for="recipient">Mottagare:</label>
-            <input id="recipient" type="text" class="form-control" required autofocus>
+            <input id="recipient" type="email" class="form-control" required autofocus>
         </div>
     </div>
     
@@ -31,10 +34,17 @@
         </div>
     </div>
     
-    <div id="bottomButtons" class="row float-right">
-        <div class="col-xs-12 float-right">
+    <div id="bottomButtons" class="row">
+        <div class="col-xs-12">
             <input type="button" class="btn btn-primary" value="Skicka" onclick="sendRegistrationConfirmationMail()" />
-            <input type="button" class="btn btn-danger" value="Avbryt" onclick="google.script.host.close()" />
+            <input type="button" class="btn btn-danger" value="Avbryt" onclick="google.script.host.close()" /> 
+            <button type="button" class="btn btn-link pull-right" onclick="onApiLoad()"><span id="advancedToggle" class="glyphicon glyphicon-paperclip pull-right" style="margin-left:5px; margin-top:2px"></span> Bifoga</button>
         </div>
+    </div>
+    
+    <div>
+        <p id="result"></p>        
+    </div>
+    <div id="fileAttachments">
     </div>
 </div>

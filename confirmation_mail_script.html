@@ -31,6 +31,7 @@ function setDefaultValues() {
 }
 
 function sendRegistrationConfirmationMail(){
+    
     var recipient = document.getElementById("recipient");
     var subject = document.getElementById('subject');
     var body = document.getElementById('message');
@@ -43,8 +44,7 @@ function sendRegistrationConfirmationMail(){
         setError(recipient, "Detta fält får ej vara tomt!");
     } else {
         var dataNlToBr = body.value.replace(/\r?\n/g, '<br>'); 
-        google.script.run.sendRegistrationConfirmationMail(recipient.value, subject.value, dataNlToBr,);
+        google.script.run.sendRegistrationConfirmationMail(recipient.value, subject.value, dataNlToBr, attachments);
     }
-
 }
 </script>
