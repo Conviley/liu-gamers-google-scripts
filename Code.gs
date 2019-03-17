@@ -86,11 +86,11 @@ function sendEmails(subject, body, startRow, emailColumn, members) {
   }
 }
 
-function sendRegistrationConfirmationMail(recipient, subject, message){
+function sendRegistrationConfirmationMail(recipient, subject, message, attachments){
   if (prompt("Är du säker på att betalningen har kommit in?")) {
     var logoUrl = "https://i.imgur.com/MUELvFw.png"
     try {
-      sendSignedEmail(recipient, subject, message, getLiuGamerLogo(logoUrl));
+      sendSignedEmail(recipient, subject, message, getLiuGamerLogo(logoUrl), attachments);
     } catch(e) {
       Logger.log(e);
     }
@@ -109,13 +109,18 @@ function getColNumByName (colName) {
   return data[0].indexOf(colName) + 1;
 }
 
-function sendSignedEmail(recipient, subject, body, logoBlob) {
+function sendSignedEmail(recipient, subject, body, logoBlob, attachemnts) {
+  var files = [];
+  attachemnts.forEach(function(element) {
+    files.push(DriveApp.getFileById(element))
+  });
   MailApp.sendEmail(
     recipient,
     subject,
     body,
     {
       htmlBody: body + "<br>" + "<img src='cid:logo'>",
+      attachments: files,
       inlineImages:{
       logo: logoBlob
     }});
@@ -152,4 +157,9 @@ function getWelcomeMessageSubject() {
 
 function getWelcomeMessage() {
   return "Welcome Gamer!", "Your membership has been confirmed! You are now an official member of LiU Gamers! :)"
+}
+
+function getOAuthToken() {
+  DriveApp.getRootFolder();
+  return ScriptApp.getOAuthToken();
 }
