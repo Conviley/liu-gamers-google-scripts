@@ -47,11 +47,11 @@ function onMemberFormSubmit() {
   memberSheet.getRange(insertRow, getColNumByName("Discordnamn")).setValue(values[3]);
 }
 
-function sendEmails(subject, body, startRow, emailColumn, members) { 
+function sendEmails(subject, body, startRow, emailColumn, members, attachments) {
   if (prompt("Är du säker på att du vill skicka ett email till samtliga medlemmar?")) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheets()[1];
-    Logger.log(getColNumByName("Epost"))
+    Logger.log(attachments)
     if (startRow == "") {
       startRow = 2;
     }
@@ -75,9 +75,9 @@ function sendEmails(subject, body, startRow, emailColumn, members) {
     for each (var recipient in recipients) {
       try {
         if (logoBlob != null) {
-          sendSignedEmail(recipient, subject, body, logoBlob);
+          sendSignedEmail(recipient, subject, body, logoBlob, attachments);
         } else {
-          sendSignedEmail(recipient, subject, body);
+          sendUnsignedEmail(recipient, subject, body);
         }
       } catch(e) {
         Logger.log(e);
@@ -126,11 +126,18 @@ function sendSignedEmail(recipient, subject, body, logoBlob, attachemnts) {
     }});
 }
 
-function sendUnsignedEmail(recipient, subject, body) {
+function sendUnsignedEmail(recipient, subject, body, attachemnts) {
+  var files = [];
+  attachemnts.forEach(function(element) {
+    files.push(DriveApp.getFileById(element))
+  });
   MailApp.sendEmail(
     recipient,
     subject,
-    body);
+    body,{
+      htmlBody: body,
+      attachments: files
+    });
 }
 
 function getLiuGamerLogo(logoUrl){
