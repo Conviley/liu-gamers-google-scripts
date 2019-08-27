@@ -84,7 +84,7 @@ function sendEmails(subject, body, startRow, emailColumn, members, attachments) 
         if (logoBlob != null) {
           sendSignedEmail(recipient, subject, body, logoBlob, attachments);
         } else {
-          sendUnsignedEmail(recipient, subject, body);
+          sendUnsignedEmail(recipient, subject, body, attachments);
         }
       } catch(e) {
         Logger.log(e);
