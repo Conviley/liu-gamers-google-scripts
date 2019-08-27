@@ -29,7 +29,7 @@ function onMemberFormSubmit() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var s = ss.getSheets()[0];
   var lastRow = s.getLastRow();
-  var range = s.getRange('B' + lastRow + ':E' + lastRow);
+  var range = s.getRange('B' + lastRow + ':J' + lastRow);
   var values = range.getValues()[0];
   
   MailApp.sendEmail(
@@ -41,27 +41,34 @@ function onMemberFormSubmit() {
   var memberSheetLastRow = memberSheet.getLastRow();
   var insertRow = memberSheetLastRow + 1;
   
-  memberSheet.getRange(insertRow, getColNumByName("Förnamn")).setValue(values[0]);
-  memberSheet.getRange(insertRow, getColNumByName("Efternamn")).setValue(values[1]);
-  memberSheet.getRange(insertRow, getColNumByName("Epost")).setValue(values[2]);
-  memberSheet.getRange(insertRow, getColNumByName("Discordnamn")).setValue(values[3]);
+  memberSheet.getRange(insertRow, getColNumByName("First Name")).setValue(values[0]);
+  memberSheet.getRange(insertRow, getColNumByName("Last Name")).setValue(values[1]);
+  memberSheet.getRange(insertRow, getColNumByName("Address")).setValue(values[2]);
+  memberSheet.getRange(insertRow, getColNumByName("Zip Code")).setValue(values[3]);
+  memberSheet.getRange(insertRow, getColNumByName("City")).setValue(values[4]);
+  memberSheet.getRange(insertRow, getColNumByName("Person Number (SSN/PN)")).setValue(values[5]);
+  memberSheet.getRange(insertRow, getColNumByName("Phone Number")).setValue(values[6]);
+  memberSheet.getRange(insertRow, getColNumByName("Email")).setValue(values[7]);
+  memberSheet.getRange(insertRow, getColNumByName("Discord Name")).setValue(values[8]);
 }
 
 function sendEmails(subject, body, startRow, emailColumn, members, attachments) {
   if (prompt("Är du säker på att du vill skicka ett email till samtliga medlemmar?")) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheets()[1];
-    Logger.log(attachments)
+    Logger.log(attachments);
     if (startRow == "") {
       startRow = 2;
     }
     if (emailColumn == "") {
-      emailColumn = getColNumByName("Epost");
+      emailColumn = getColNumByName("Email");
     }
     if (members == "") {
-      members = sheet.getRange(2,getColNumByName("Antal medlemmar")).getValue();
+      members = sheet.getRange(2,getColNumByName("Antal Medlemmar")).getValue();
     }
     
+    Logger.log("EMAIL");
+    Logger.log(members);
     var range = sheet.getRange(startRow, emailColumn, members);
     var recipients = range.getValues();
     var logoUrl = "https://i.imgur.com/MUELvFw.png";
@@ -154,7 +161,7 @@ function getLiuGamerLogo(logoUrl){
 
 function getBottomMemberEmail() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
-  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Epost"));
+  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Email"));
   return range.getValue();
 }
 
