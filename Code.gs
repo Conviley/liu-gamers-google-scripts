@@ -39,7 +39,11 @@ function onMemberFormSubmit() {
   
   var memberSheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
   var memberSheetLastRow = memberSheet.getLastRow();
-  var insertRow = memberSheetLastRow + 1;
+  var insertRow =  memberSheetLastRow;
+  if (members > 0) {
+    insertRow++;
+  }
+  
   
   memberSheet.getRange(insertRow, getColNumByName("First Name")).setValue(values[0]);
   memberSheet.getRange(insertRow, getColNumByName("Last Name")).setValue(values[1]);
