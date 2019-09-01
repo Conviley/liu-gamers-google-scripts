@@ -40,6 +40,7 @@ function onMemberFormSubmit() {
   var memberSheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
   var memberSheetLastRow = memberSheet.getLastRow();
   var insertRow =  memberSheetLastRow;
+  members = memberSheet.getRange(2,getColNumByName("Antal Medlemmar")).getValue();
   if (members > 0) {
     insertRow++;
   }
