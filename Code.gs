@@ -32,19 +32,41 @@ function onMemberFormSubmit() {
   var range = s.getRange('B' + lastRow + ':E' + lastRow);
   var values = range.getValues()[0];
   
+  var expectedPaymentAmount = 0;
+  // Check if is liu Gamer
+  if (values[3] == "No") {
+    expectedPaymentAmount += 100;
+  } else if (values[3] == "Yes") {
+    expectedPaymentAmount += 50;
+  }
+  
+  // Check if need Computer Transport
+  if (values[5] == "Yes") {
+    expectedPaymentAmount += 60;
+  }
+  
   MailApp.sendEmail(
     "helloliugamers@gmail.com",
-    "Ny Medlem!",
-    values[0] + " " + values[1] + " " + "Har har blivit medlem, vänligen bekräfta dennes betalning!");
+    "Ny LAN-anmälan",
+    values[1] + " " + values[2] + " Har har anmält sig för höstlanet! Medlem: " + values[3] + ", HiQ Anställd: " + values[4] + ", behöver datorskjuts: " + values[5] + 
+    ". vänligen bekräfta dennes betalning! Förväntad summa: " + expectedPaymentAmount + " kr.");
   
   var memberSheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
   var memberSheetLastRow = memberSheet.getLastRow();
-  var insertRow = memberSheetLastRow + 1;
+  var insertRow =  memberSheetLastRow;
+  members = memberSheet.getRange(2,getColNumByName("Antal anmälningar")).getValue();
+  if (members > 0) {
+    insertRow++;
+  }
   
-  memberSheet.getRange(insertRow, getColNumByName("Förnamn")).setValue(values[0]);
-  memberSheet.getRange(insertRow, getColNumByName("Efternamn")).setValue(values[1]);
-  memberSheet.getRange(insertRow, getColNumByName("Epost")).setValue(values[2]);
-  memberSheet.getRange(insertRow, getColNumByName("Discordnamn")).setValue(values[3]);
+  memberSheet.getRange(insertRow, getColNumByName("Email")).setValue(values[0]);
+  memberSheet.getRange(insertRow, getColNumByName("Förnamn")).setValue(values[1]);
+  memberSheet.getRange(insertRow, getColNumByName("Efternamn")).setValue(values[2]);
+  memberSheet.getRange(insertRow, getColNumByName("LiU Gamer")).setValue(values[3]);
+  memberSheet.getRange(insertRow, getColNumByName("HiQ Anställd")).setValue(values[4]);
+  memberSheet.getRange(insertRow, getColNumByName("Datorskjuts")).setValue(values[5]);
+  memberSheet.getRange(insertRow, getColNumByName("Förväntad Betalad Summa")).setValue(expectedPaymentAmount);
+  memberSheet.getRange(insertRow, getColNumByName("Upphämtningsaddress")).setValue(values[6]);
 }
 
 function sendEmails(subject, body, startRow, emailColumn, members, attachments) {
@@ -56,10 +78,10 @@ function sendEmails(subject, body, startRow, emailColumn, members, attachments) 
       startRow = 2;
     }
     if (emailColumn == "") {
-      emailColumn = getColNumByName("Epost");
+      emailColumn = getColNumByName("Email");
     }
     if (members == "") {
-      members = sheet.getRange(2,getColNumByName("Antal medlemmar")).getValue();
+      members = sheet.getRange(2,getColNumByName("Antal anmälningar")).getValue();
     }
     
     var range = sheet.getRange(startRow, emailColumn, members);
@@ -154,16 +176,16 @@ function getLiuGamerLogo(logoUrl){
 
 function getBottomMemberEmail() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
-  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Epost"));
+  var range = sheet.getRange(sheet.getLastRow(),getColNumByName("Email"));
   return range.getValue();
 }
 
 function getWelcomeMessageSubject() {
-  return "Welcome Gamer!";
+  return "HöstLan";
 }
 
 function getWelcomeMessage() {
-  return "Welcome Gamer!", "Your membership has been confirmed! You are now an official member of LiU Gamers! :)"
+  return "Din betalning är bekräftad! Ses på Lanet! :)"
 }
 
 function getOAuthToken() {
