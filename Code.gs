@@ -29,7 +29,7 @@ function onMemberFormSubmit() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var s = ss.getSheets()[0];
   var lastRow = s.getLastRow();
-  var range = s.getRange('B' + lastRow + ':E' + lastRow);
+  var range = s.getRange('B' + lastRow + ':H' + lastRow);
   var values = range.getValues()[0];
   
   var expectedPaymentAmount = 0;
